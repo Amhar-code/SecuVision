@@ -12,7 +12,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-// Your Firebase Admin SDK code here
+// Your Firebase Admin SDK code 
 console.log('Firebase Admin initialized');
 
 export default function App() {
