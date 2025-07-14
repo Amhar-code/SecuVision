@@ -33,3 +33,5 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+.env
+Frontend/secuvisionapp/secuvision-8b0d0-firebase-adminsdk-fbsvc-74ac24d4bd.json

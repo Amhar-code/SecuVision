@@ -2,6 +2,18 @@ import messaging from "@react-native-firebase/messaging";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
+// Import Firebase Admin SDK
+require('dotenv').config({ path: './Frontend/secuvisionapp/.env' });
+const admin = require('firebase-admin');
+
+const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+// Your Firebase Admin SDK code here
+console.log('Firebase Admin initialized');
 
 export default function App() {
 
