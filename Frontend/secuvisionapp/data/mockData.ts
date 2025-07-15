@@ -107,8 +107,8 @@ export const mockMedia = [
   {
     id: '2',
     type: 'image',
-    url: 'https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://www.shutterstock.com/image-photo/thief-wears-gloves-steal-boxes-260nw-2358471589.jpg',
+    thumbnailUrl: 'https://www.shutterstock.com/image-photo/thief-wears-gloves-steal-boxes-260nw-2358471589.jpg',
     timestamp: '2025-05-10T12:15:45',
     location: 'Storage Area',
     camera: 'Warehouse',
