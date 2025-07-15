@@ -9,7 +9,7 @@ import {
   Easing
 } from 'react-native';
 import { TriangleAlert as AlertTriangle, ChevronRight, ChevronDown, Clock, MapPin, Percent } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 
 interface AlertItemProps {
   alert: {

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Bell, Video, VideoOff, Shield, ShieldAlert, Eye, MapPin, Volume2, VolumeX } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 import Header from '@/components/Header';
 import CameraCard from '@/components/CameraCard';
 import StatCard from '@/components/StatCard';

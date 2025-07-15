@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Filter, ChevronRight, CircleAlert as AlertCircle, Calendar, ArrowDownUp } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 import Header from '@/components/Header';
 import { mockAlerts } from '@/data/mockData';
 import AlertItem from '@/components/AlertItem';

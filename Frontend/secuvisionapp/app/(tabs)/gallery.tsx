@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Search, Calendar, Image as ImageIcon, Video, SlidersHorizontal, X } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 import Header from '@/components/Header';
 import { mockMedia } from '@/data/mockData';
 import MediaViewer from '@/components/MediaViewer';
@@ -26,11 +26,89 @@ export default function GalleryScreen() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [mediaType, setMediaType] = useState<'all' | 'image' | 'video'>('all');
   const [selectedMedia, setSelectedMedia] = useState<any | null>(null);
+  const [dateFilter, setDateFilter] = useState<{startDate: string | null, endDate: string | null}>({
+    startDate: null,
+    endDate: null
+  });
+  
+  // Log available dates on component mount
+  React.useEffect(() => {
+    console.log('Available dates in mockMedia:');
+    mockMedia.forEach(item => {
+      const date = new Date(item.timestamp);
+      const isoDate = date.toISOString().split('T')[0];
+      console.log(`ID: ${item.id}, Date: ${isoDate}, Timestamp: ${item.timestamp}`);
+    });
+  }, []);
   
   const filteredMedia = mockMedia.filter(item => {
-    // Filter by search query
-    if (searchQuery && !item.location.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
+    const itemDate = new Date(item.timestamp);
+    
+    // Filter by date range from calendar picker
+    if (dateFilter.startDate || dateFilter.endDate) {
+      const itemDateOnly = itemDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+      
+      if (dateFilter.startDate && itemDateOnly < dateFilter.startDate) {
+        return false;
+      }
+      if (dateFilter.endDate && itemDateOnly > dateFilter.endDate) {
+        return false;
+      }
+    }
+    
+    // Filter by search query (date search)
+    if (searchQuery) {
+      const searchDate = searchQuery.trim();
+      
+      // Get date components for this item
+      const itemDay = itemDate.getDate(); // 1-31
+      const itemMonth = itemDate.getMonth() + 1; // 1-12
+      const itemYear = itemDate.getFullYear();
+      
+      // Format date strings for comparison
+      const dayStr = itemDay.toString().padStart(2, '0');
+      const monthStr = itemMonth.toString().padStart(2, '0');
+      const yearStr = itemYear.toString();
+      const isoDate = `${yearStr}-${monthStr}-${dayStr}`; // 2025-05-10
+      
+      let isMatch = false;
+      
+      // Check for day range pattern (e.g., "8-10", "07-09", "5-8")
+      const rangePattern = /^(\d{1,2})-(\d{1,2})$/;
+      const rangeMatch = searchDate.match(rangePattern);
+      
+      if (rangeMatch) {
+        const startDay = parseInt(rangeMatch[1]);
+        const endDay = parseInt(rangeMatch[2]);
+        
+        if (startDay <= endDay) {
+          isMatch = itemDay >= startDay && itemDay <= endDay;
+          console.log(`🔍 Range search "${searchDate}": Item ${item.id} (day ${itemDay}) ${isMatch ? '✅ MATCH' : '❌ NO MATCH'}`);
+        }
+      } else {
+        // Simple string search in various date formats
+        const searchTermLower = searchDate.toLowerCase();
+        const searchTargets = [
+          isoDate, // 2025-05-10
+          `${monthStr}/${dayStr}/${yearStr}`, // 05/10/2025
+          `${dayStr}/${monthStr}/${yearStr}`, // 10/05/2025
+          dayStr, // 10
+          monthStr, // 05
+          yearStr, // 2025
+          itemDay.toString(), // 10 (without padding)
+          itemMonth.toString() // 5 (without padding)
+        ];
+        
+        isMatch = searchTargets.some(target => 
+          target.toLowerCase().includes(searchTermLower)
+        );
+        
+        console.log(`🔎 Text search "${searchDate}": Item ${item.id} (${isoDate}) ${isMatch ? '✅ MATCH' : '❌ NO MATCH'}`);
+      }
+      
+      if (!isMatch) {
+        return false;
+      }
     }
     
     // Filter by media type
@@ -44,7 +122,21 @@ export default function GalleryScreen() {
     return true;
   });
   
-  const groupedByDate = filteredMedia.reduce((groups, item) => {
+  // Log filtered results for debugging
+  if (searchQuery) {
+    console.log(`\n🔎 SEARCH RESULTS for "${searchQuery}"`);
+    console.log(`📊 Found ${filteredMedia.length} items out of ${mockMedia.length} total`);
+    if (filteredMedia.length > 0) {
+      console.log('📝 Matching items:');
+      filteredMedia.forEach(item => {
+        const date = new Date(item.timestamp);
+        console.log(`   • ID:${item.id} → Day ${date.getDate()} (${date.toISOString().split('T')[0]})`);
+      });
+    }
+    console.log(''); // Empty line for readability
+  }
+  
+  const groupedByDate = filteredMedia.reduce((groups: Record<string, any[]>, item) => {
     const date = new Date(item.timestamp).toLocaleDateString();
     if (!groups[date]) {
       groups[date] = [];
@@ -53,7 +145,7 @@ export default function GalleryScreen() {
     return groups;
   }, {});
   
-  const renderMediaItem = ({ item }) => (
+  const renderMediaItem = ({ item }: { item: any }) => (
     <TouchableOpacity 
       style={styles.mediaItem}
       onPress={() => setSelectedMedia(item)}
@@ -67,7 +159,7 @@ export default function GalleryScreen() {
     </TouchableOpacity>
   );
   
-  const renderDateSection = ({ item }) => (
+  const renderDateSection = ({ item }: { item: any }) => (
     <View style={styles.dateSection}>
       <Text style={styles.dateSectionTitle}>{item.date}</Text>
       <FlatList
@@ -93,13 +185,16 @@ export default function GalleryScreen() {
       
       <View style={styles.searchContainer}>
         <View style={styles.searchInputContainer}>
-          <Search size={20} color={colors.textSecondary} style={styles.searchIcon} />
+          <Calendar size={20} color={colors.textSecondary} style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search by location..."
+            placeholder="Search by date (Try: 2025-05-10, 8-10, 7-9)..."
             placeholderTextColor={colors.textSecondary}
             value={searchQuery}
-            onChangeText={setSearchQuery}
+            onChangeText={(text) => {
+              console.log('Search input changed:', text);
+              setSearchQuery(text);
+            }}
           />
           {searchQuery ? (
             <TouchableOpacity 
@@ -112,14 +207,38 @@ export default function GalleryScreen() {
         </View>
         
         <TouchableOpacity 
-          style={styles.filterButton}
+          style={[
+            styles.filterButton,
+            (dateFilter.startDate || dateFilter.endDate) && styles.filterButtonActive
+          ]}
           onPress={() => setShowDatePicker(true)}
         >
-          <Calendar size={20} color={colors.textPrimary} />
+          <Calendar size={20} color={
+            (dateFilter.startDate || dateFilter.endDate) ? colors.primary : colors.textPrimary
+          } />
         </TouchableOpacity>
       </View>
       
       <View style={styles.typeFilterContainer}>
+        {(dateFilter.startDate || dateFilter.endDate) && (
+          <View style={styles.dateFilterInfo}>
+            <Text style={styles.dateFilterText}>
+              {dateFilter.startDate && dateFilter.endDate 
+                ? `${dateFilter.startDate} to ${dateFilter.endDate}`
+                : dateFilter.startDate 
+                ? `From ${dateFilter.startDate}`
+                : `Until ${dateFilter.endDate}`
+              }
+            </Text>
+            <TouchableOpacity 
+              style={styles.clearDateButton}
+              onPress={() => setDateFilter({ startDate: null, endDate: null })}
+            >
+              <X size={16} color={colors.textSecondary} />
+            </TouchableOpacity>
+          </View>
+        )}
+        
         <TouchableOpacity 
           style={[
             styles.typeFilterButton, 
@@ -173,7 +292,12 @@ export default function GalleryScreen() {
             <ImageIcon size={64} color={colors.textSecondary} style={styles.emptyIcon} />
             <Text style={styles.emptyTitle}>No Media Found</Text>
             <Text style={styles.emptyDescription}>
-              There are no media items matching your current filters.
+              {searchQuery 
+                ? `No media items found for the searched date "${searchQuery}".`
+                : (dateFilter.startDate || dateFilter.endDate)
+                ? `No media items found for the selected date range.`
+                : "There are no media items matching your current filters."
+              }
             </Text>
           </View>
         }
@@ -190,7 +314,11 @@ export default function GalleryScreen() {
         visible={showDatePicker}
         onClose={() => setShowDatePicker(false)}
         onApplyFilter={(startDate, endDate) => {
-          console.log('Date filter:', startDate, endDate);
+          console.log('Date filter applied:', startDate, endDate);
+          setDateFilter({
+            startDate: startDate ? startDate.toISOString().split('T')[0] : null,
+            endDate: endDate ? endDate.toISOString().split('T')[0] : null
+          });
           setShowDatePicker(false);
         }}
       />
@@ -238,10 +366,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 12,
   },
+  filterButtonActive: {
+    backgroundColor: colors.primaryLight,
+  },
   typeFilterContainer: {
     flexDirection: 'row',
     paddingHorizontal: 16,
     marginBottom: 16,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  dateFilterInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.primaryLight,
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginRight: 12,
+    marginBottom: 8,
+  },
+  dateFilterText: {
+    fontFamily: 'Inter-Medium',
+    fontSize: 12,
+    color: colors.primary,
+    marginRight: 8,
+  },
+  clearDateButton: {
+    padding: 4,
   },
   typeFilterButton: {
     flexDirection: 'row',

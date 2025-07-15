@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import { Calendar, X, CircleAlert as AlertCircle, ArrowUpDown } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 
 interface FilterModalProps {
   visible: boolean;
