@@ -98,8 +98,8 @@ export const mockMedia = [
   {
     id: '1',
     type: 'image',
-    url: 'https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://www.shutterstock.com/image-photo/package-thief-caught-on-video-260nw-1725082078.jpg',
+    thumbnailUrl: 'https://www.shutterstock.com/image-photo/package-thief-caught-on-video-260nw-1725082078.jpg',
     timestamp: '2025-05-10T14:32:10',
     location: 'Main Building',
     camera: 'Front Entrance',
@@ -107,8 +107,8 @@ export const mockMedia = [
   {
     id: '2',
     type: 'image',
-    url: 'https://images.pexels.com/photos/164446/pexels-photo-164446.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/164446/pexels-photo-164446.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnailUrl: 'https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     timestamp: '2025-05-10T12:15:45',
     location: 'Storage Area',
     camera: 'Warehouse',
@@ -125,8 +125,8 @@ export const mockMedia = [
   {
     id: '4',
     type: 'image',
-    url: 'https://images.pexels.com/photos/1619980/pexels-photo-1619980.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/1619980/pexels-photo-1619980.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnailUrl: 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     timestamp: '2025-05-09T10:05:12',
     location: 'Admin Building',
     camera: 'Office Area',
