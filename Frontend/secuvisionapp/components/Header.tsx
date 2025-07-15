@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { ChevronLeft, BellRing, Shield } from 'lucide-react-native';
 import { router, usePathname } from 'expo-router';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 
 interface HeaderProps {
   title: string;

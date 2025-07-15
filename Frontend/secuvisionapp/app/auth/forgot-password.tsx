@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Keyboard } from 'react-native';
 import { Link, router } from 'expo-router';
 import { Mail, ArrowLeft } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 import * as Animatable from 'react-native-animatable';
 
 export default function ForgotPasswordScreen() {

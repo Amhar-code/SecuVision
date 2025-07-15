@@ -11,7 +11,7 @@ import {
   Platform
 } from 'react-native';
 import { X, Share, Download, Play, Pause, SkipBack, SkipForward } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 import { WebView } from 'react-native-webview';
 
 const { width, height } = Dimensions.get('window');
