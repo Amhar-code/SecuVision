@@ -125,8 +125,8 @@ export const mockMedia = [
   {
     id: '4',
     type: 'image',
-    url: 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://media.istockphoto.com/id/949216532/photo/thief-stealing-file-from-shelf.jpg?s=612x612&w=0&k=20&c=eLFcWWzzIwwfFY0NOdLVZ-b9MWLRV3MpvnQNxSOgpAY=',
+    thumbnailUrl: 'https://media.istockphoto.com/id/949216532/photo/thief-stealing-file-from-shelf.jpg?s=612x612&w=0&k=20&c=eLFcWWzzIwwfFY0NOdLVZ-b9MWLRV3MpvnQNxSOgpAY=',
     timestamp: '2025-05-09T10:05:12',
     location: 'Admin Building',
     camera: 'Office Area',
