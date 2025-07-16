@@ -143,8 +143,8 @@ export const mockMedia = [
   {
     id: '6',
     type: 'image',
-    url: 'https://images.pexels.com/photos/693895/pexels-photo-693895.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/693895/pexels-photo-693895.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://media.istockphoto.com/id/1996153491/photo/young-woman-shoplifting-in-a-convenience-store.jpg?s=612x612&w=0&k=20&c=Rxtedi_BJR0yEm4Slv8Ba-p4bIpXPLGaPgAYiy5v5hg=',
+    thumbnailUrl: 'https://media.istockphoto.com/id/1996153491/photo/young-woman-shoplifting-in-a-convenience-store.jpg?s=612x612&w=0&k=20&c=Rxtedi_BJR0yEm4Slv8Ba-p4bIpXPLGaPgAYiy5v5hg=',
     timestamp: '2025-05-08T15:45:22',
     location: 'Service Entrance',
     camera: 'Back Door',
@@ -170,8 +170,8 @@ export const mockMedia = [
   {
     id: '9',
     type: 'image',
-    url: 'https://images.pexels.com/photos/3861437/pexels-photo-3861437.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/3861437/pexels-photo-3861437.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://media.istockphoto.com/id/1036852008/photo/a-male-shoplifter-stealing-some-expensive-gourmet-cheese-in-a-supermarket.jpg?s=612x612&w=0&k=20&c=wd_sPyj4AotyoEDsWvzwO5-xFBHlgkpVLfcXABoRWKI=',
+    thumbnailUrl: 'https://media.istockphoto.com/id/1036852008/photo/a-male-shoplifter-stealing-some-expensive-gourmet-cheese-in-a-supermarket.jpg?s=612x612&w=0&k=20&c=wd_sPyj4AotyoEDsWvzwO5-xFBHlgkpVLfcXABoRWKI=',
     timestamp: '2025-05-07T16:33:40',
     location: 'Storage Area',
     camera: 'Warehouse',
