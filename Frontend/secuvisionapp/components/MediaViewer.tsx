@@ -13,6 +13,7 @@ import {
 import { X, Share, Download, Play, Pause, SkipBack, SkipForward } from 'lucide-react-native';
 import { colors } from '@/constants/Colors';
 import { WebView } from 'react-native-webview';
+import { Video, ResizeMode } from 'expo-av';
 
 const { width, height } = Dimensions.get('window');
 
@@ -116,16 +117,27 @@ export default function MediaViewer({ media, onClose }: MediaViewerProps) {
                     source={{ uri: media.url }}
                     style={styles.video}
                     allowsInlineMediaPlayback={true}
+                    mediaPlaybackRequiresUserAction={false}
+                    javaScriptEnabled={true}
+                    domStorageEnabled={true}
                   />
                 ) : (
-                  <Image
-                    source={{ uri: media.thumbnailUrl }}
+                  <Video
+                    source={{ uri: media.url }}
                     style={styles.video}
-                    resizeMode="contain"
+                    useNativeControls
+                    shouldPlay={isPlaying}
+                    isLooping={false}
+                    resizeMode={ResizeMode.CONTAIN}
+                    onPlaybackStatusUpdate={(status) => {
+                      if ('isPlaying' in status) {
+                        setIsPlaying(status.isPlaying || false);
+                      }
+                    }}
                   />
                 )}
                 
-                {showControls && media.type === 'video' && renderControls()}
+                {showControls && media.type === 'video' && Platform.OS === 'web' && renderControls()}
               </View>
             )}
           </View>

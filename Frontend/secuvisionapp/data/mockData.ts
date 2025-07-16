@@ -116,8 +116,8 @@ export const mockMedia = [
   {
     id: '3',
     type: 'video',
-    url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-    thumbnailUrl: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+    url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+    thumbnailUrl: 'https://media.istockphoto.com/id/1128826884/photo/security-surveillance-camera-monitor-displaying-multiple-views.jpg?s=612x612&w=0&k=20&c=vH9YvQzJ5kF7Rm3L8gT2pX6wN4aE1sB9mU8cO7iD3qR=',
     timestamp: '2025-05-09T18:22:33',
     location: 'North Side',
     camera: 'Parking Lot',
@@ -134,8 +134,8 @@ export const mockMedia = [
   {
     id: '5',
     type: 'video',
-    url: 'https://player.vimeo.com/video/685084728',
-    thumbnailUrl: 'https://images.pexels.com/photos/544971/pexels-photo-544971.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://v.ftcdn.net/07/97/51/91/700_F_797519144_MhbCsp0BlQmTs7f79K9VGYdsexE17Ri2_ST.mp4',
+    thumbnailUrl: 'https://media.istockphoto.com/id/1344938227/photo/security-guard-watching-surveillance-monitors.jpg?s=612x612&w=0&k=20&c=8vQzMzQGYsZT5KvF7N3ZqY8rB9wLdKpP2V4zO9yXlNE=',
     timestamp: '2025-05-08T22:15:00',
     location: 'Main Building',
     camera: 'Front Entrance',
@@ -152,8 +152,8 @@ export const mockMedia = [
   {
     id: '7',
     type: 'image',
-    url: 'https://images.pexels.com/photos/3075318/pexels-photo-3075318.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/3075318/pexels-photo-3075318.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://media.istockphoto.com/id/1326417862/photo/cctv-security-camera-footage-screen-showing-thief-breaking-into-house.jpg?s=612x612&w=0&k=20&c=qL8yTYzMQzCj0t7VJO8fQzY6vJ9-RkPGz8r_2XVKY8M=',
+    thumbnailUrl: 'https://media.istockphoto.com/id/1326417862/photo/cctv-security-camera-footage-screen-showing-thief-breaking-into-house.jpg?s=612x612&w=0&k=20&c=qL8yTYzMQzCj0t7VJO8fQzY6vJ9-RkPGz8r_2XVKY8M=',
     timestamp: '2025-05-08T14:12:50',
     location: 'Admin Building',
     camera: 'Office Area',
@@ -161,8 +161,8 @@ export const mockMedia = [
   {
     id: '8',
     type: 'video',
-    url: 'https://player.vimeo.com/video/598849989',
-    thumbnailUrl: 'https://images.pexels.com/photos/257484/pexels-photo-257484.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    thumbnailUrl: 'https://media.istockphoto.com/id/1284780553/photo/security-cameras-monitoring-parking-lot-at-night.jpg?s=612x612&w=0&k=20&c=7YzKgPQzVwX8fGhU2mLqO4vF6nH9iT3jS5rW1xC2aE=',
     timestamp: '2025-05-07T20:18:05',
     location: 'North Side',
     camera: 'Parking Lot',
