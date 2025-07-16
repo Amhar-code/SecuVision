@@ -116,8 +116,8 @@ export const mockMedia = [
   {
     id: '3',
     type: 'video',
-    url: 'https://player.vimeo.com/video/518430838',
-    thumbnailUrl: 'https://images.pexels.com/photos/1383075/pexels-photo-1383075.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    thumbnailUrl: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
     timestamp: '2025-05-09T18:22:33',
     location: 'North Side',
     camera: 'Parking Lot',
@@ -179,8 +179,8 @@ export const mockMedia = [
   {
     id: '10',
     type: 'image',
-    url: 'https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    thumbnailUrl: 'https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    url: 'https://media.istockphoto.com/id/1063716508/photo/stealing-apple-in-food-store.jpg?s=612x612&w=0&k=20&c=ErDMn1HqYNrCsZRC--aB_b8zsirjiltio2sjC3yzFH0=',
+    thumbnailUrl: 'https://media.istockphoto.com/id/1063716508/photo/stealing-apple-in-food-store.jpg?s=612x612&w=0&k=20&c=ErDMn1HqYNrCsZRC--aB_b8zsirjiltio2sjC3yzFH0=',
     timestamp: '2025-05-07T09:25:18',
     location: 'Main Building',
     camera: 'Front Entrance',
