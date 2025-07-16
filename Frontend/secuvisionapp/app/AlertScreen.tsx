@@ -1,5 +1,5 @@
 
-import AlertsScreen from '@/components/AlertsScreen';
+import AlertsScreen from '@/components/AlertScreen';
 import React from 'react';
 
 export default function App() {
