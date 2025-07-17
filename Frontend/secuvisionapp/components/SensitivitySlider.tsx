@@ -10,7 +10,7 @@ import {
   PanResponder
 } from 'react-native';
 import { X, TriangleAlert as AlertTriangle, ShieldCheck } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 
 interface SensitivitySliderProps {
   visible: boolean;

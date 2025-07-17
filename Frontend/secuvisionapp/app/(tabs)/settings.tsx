@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Bell, Lock, CircleHelp as HelpCircle, LogOut, Moon, Bluetooth, FileSliders as Sliders, MessageSquare, ChevronRight } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 import Header from '@/components/Header';
 import SensitivitySlider from '@/components/SensitivitySlider';
 import DeviceCard from '@/components/DeviceCard';

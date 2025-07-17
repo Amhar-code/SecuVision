@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 
 const { width } = Dimensions.get('window');
 const GRAPH_WIDTH = width - 64;
