@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { ChartBar as BarChart3, Clock, Settings, Grid3x3 as Grid3X3 } from 'lucide-react-native';
-import { colors } from '@/constants/Colors';
+import { colors } from '../../constants/Colors';
 
 export default function TabLayout() {
   return (
