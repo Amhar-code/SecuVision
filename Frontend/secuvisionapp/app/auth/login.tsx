@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Platform, ActivityIndicator, Alert, Keyboard } from 'react-native';
 import { Link, router } from 'expo-router';
 import { Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 import * as Animatable from 'react-native-animatable';
 import { auth } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';

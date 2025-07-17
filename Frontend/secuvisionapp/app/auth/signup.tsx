@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Link, router } from 'expo-router';
 import { Lock, Mail, User, Eye, EyeOff, ArrowLeft } from 'lucide-react-native';
-import { colors } from '@/constants/colors';
+import { colors } from '@/constants/Colors';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
