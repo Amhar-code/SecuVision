@@ -18,42 +18,42 @@ interface SensitivitySliderProps {
 }
 
 export default function SensitivitySlider({ visible, onClose }: SensitivitySliderProps) {
-  const [sensitivity, setSensitivity] = useState(70);
+  const [sensitivity, setSensitivity] = useState(0.7);
   const sliderWidth = 300;
   const thumbSize = 28;
   
-  const translateX = new Animated.Value((sensitivity / 100) * (sliderWidth - thumbSize));
+  const translateX = new Animated.Value(sensitivity * (sliderWidth - thumbSize));
   
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderGrant: () => {
-      translateX.setOffset(translateX._value);
-      translateX.setValue(0);
-    },
-    onPanResponderMove: (_, gestureState) => {
-      let newValue = translateX._offset + gestureState.dx;
-      if (newValue < 0) {
-        newValue = 0;
-      }
-      if (newValue > sliderWidth - thumbSize) {
-        newValue = sliderWidth - thumbSize;
-      }
-      translateX.setValue(newValue - translateX._offset);
-      
-      // Calculate and set sensitivity based on the thumb position
-      const newSensitivity = Math.round((newValue / (sliderWidth - thumbSize)) * 100);
-      setSensitivity(newSensitivity);
-    },
-    onPanResponderRelease: () => {
-      translateX.flattenOffset();
-    },
-  });
+  const panResponder = React.useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        translateX.extractOffset();
+      },
+      onPanResponderMove: (_, gestureState) => {
+        const newValue = Math.max(
+          0,
+          Math.min(gestureState.dx, sliderWidth - thumbSize)
+        );
+        translateX.setValue(newValue);
+        
+        // Calculate and set sensitivity based on the thumb position (0-1 range)
+        const newSensitivity = parseFloat(
+          Math.max(0, Math.min(1, newValue / (sliderWidth - thumbSize))).toFixed(2)
+        );
+        setSensitivity(newSensitivity);
+      },
+      onPanResponderRelease: () => {
+        translateX.flattenOffset();
+      },
+    })
+  ).current;
   
   const getTrackColorStyle = () => {
-    if (sensitivity < 40) {
+    if (sensitivity < 0.4) {
       return { backgroundColor: colors.alert };
-    } else if (sensitivity < 70) {
+    } else if (sensitivity < 0.7) {
       return { backgroundColor: colors.warning };
     } else {
       return { backgroundColor: colors.success };
@@ -61,9 +61,9 @@ export default function SensitivitySlider({ visible, onClose }: SensitivitySlide
   };
   
   const getMessage = () => {
-    if (sensitivity < 40) {
+    if (sensitivity < 0.4) {
       return "Low sensitivity: May miss legitimate alerts but reduces false positives.";
-    } else if (sensitivity < 70) {
+    } else if (sensitivity < 0.7) {
       return "Medium sensitivity: Balanced detection with moderate false positives.";
     } else {
       return "High sensitivity: Catches most security concerns but may have more false positives.";
@@ -71,9 +71,9 @@ export default function SensitivitySlider({ visible, onClose }: SensitivitySlide
   };
   
   const getIcon = () => {
-    if (sensitivity < 40) {
+    if (sensitivity < 0.4) {
       return <AlertTriangle size={24} color={colors.alert} />;
-    } else if (sensitivity < 70) {
+    } else if (sensitivity < 0.7) {
       return <AlertTriangle size={24} color={colors.warning} />;
     } else {
       return <ShieldCheck size={24} color={colors.success} />;
@@ -101,11 +101,11 @@ export default function SensitivitySlider({ visible, onClose }: SensitivitySlide
               <View style={styles.sensitivityValueContainer}>
                 <Text style={[
                   styles.sensitivityValue,
-                  sensitivity < 40 ? { color: colors.alert } :
-                  sensitivity < 70 ? { color: colors.warning } :
+                  sensitivity < 0.4 ? { color: colors.alert } :
+                  sensitivity < 0.7 ? { color: colors.warning } :
                   { color: colors.success }
                 ]}>
-                  {sensitivity}%
+                  {(sensitivity * 100).toFixed(0)}%
                 </Text>
               </View>
               
@@ -145,8 +145,8 @@ export default function SensitivitySlider({ visible, onClose }: SensitivitySlide
                 <TouchableOpacity 
                   style={styles.resetButton}
                   onPress={() => {
-                    setSensitivity(70);
-                    translateX.setValue((70 / 100) * (sliderWidth - thumbSize));
+                    setSensitivity(0.7);
+                    translateX.setValue(0.7 * (sliderWidth - thumbSize));
                   }}
                 >
                   <Text style={styles.resetButtonText}>Reset</Text>
