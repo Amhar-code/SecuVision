@@ -22,31 +22,76 @@ import ActivityGraph from '@/components/ActivityGraph';
 
 const { width } = Dimensions.get('window');
 
-const FRONT_CAMERA = {
-  name: 'Front Entrance',
-  location: 'Main Building',
-  streamUrl: 'https://images.pexels.com/photos/1117493/pexels-photo-1117493.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  isActive: true,
-};
+// Only supermarket-relevant cameras
+const CAMERAS = [
+  {
+    name: 'Front Entrance',
+    location: 'Main Building',
+    streamUrl: 'https://images.pexels.com/photos/1117493/pexels-photo-1117493.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    isActive: true,
+  },
+  {
+    name: 'Checkout Area',
+    location: 'Cashier Zone',
+    streamUrl: 'https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    isActive: true,
+  },
+  {
+    name: 'Aisle 3',
+    location: 'Snacks & Drinks',
+    streamUrl: 'https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    isActive: true,
+  },
+  {
+    name: 'Storage Room',
+    location: 'Back Area',
+    streamUrl: 'https://images.pexels.com/photos/1797428/pexels-photo-1797428.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    isActive: true,
+  },
+];
 
 export default function DashboardScreen() {
   const [muted, setMuted] = useState(true);
   const [isConnected, setIsConnected] = useState(true);
-  const activeCameras = 4;
-  const totalCameras = 5;
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [selectedCamera, setSelectedCamera] = useState(0);
+  const activeCameras = CAMERAS.length;
+  const totalCameras = CAMERAS.length;
   const activeAlerts = 0;
+
+  // Example user details (replace with real user data from auth)
+  const user = {
+    name: 'John Doe',
+    email: 'john.doe@supermarket.com',
+    role: 'Manager',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
+      {/* User Details Modal */}
+      {showUserModal && (
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Image source={{ uri: user.avatar }} style={styles.modalAvatar} />
+            <Text style={styles.modalName}>{user.name}</Text>
+            <Text style={styles.modalEmail}>{user.email}</Text>
+            <Text style={styles.modalRole}>{user.role}</Text>
+            <TouchableOpacity style={styles.modalCloseBtn} onPress={() => setShowUserModal(false)}>
+              <Text style={{ color: '#fff', fontWeight: 'bold' }}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
       <View style={styles.header}>
         <Text style={styles.brand}>SecuVision</Text>
         <View style={styles.headerIcons}>
           <TouchableOpacity style={styles.headerIconBtn}>
             <Bell size={22} color={colors.textPrimary} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.headerIconBtn}>
-            <Image source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }} style={styles.avatar} />
+          <TouchableOpacity style={styles.headerIconBtn} onPress={() => setShowUserModal(true)}>
+            <Image source={{ uri: user.avatar }} style={styles.avatar} />
           </TouchableOpacity>
         </View>
       </View>
@@ -54,13 +99,13 @@ export default function DashboardScreen() {
         {/* Live Camera */}
         <View style={styles.mainCameraContainer}>
           <View style={styles.liveBadge}><Text style={styles.liveBadgeText}>● LIVE</Text></View>
-          <Image source={{ uri: FRONT_CAMERA.streamUrl }} style={styles.mainCameraFeed} />
+          <Image source={{ uri: CAMERAS[selectedCamera].streamUrl }} style={styles.mainCameraFeed} />
           <View style={styles.cameraOverlay}>
             <View>
-              <Text style={styles.cameraName}>{FRONT_CAMERA.name}</Text>
+              <Text style={styles.cameraName}>{CAMERAS[selectedCamera].name}</Text>
               <View style={styles.locationRow}>
                 <MapPin size={14} color="#fff" />
-                <Text style={styles.locationText}>{FRONT_CAMERA.location}</Text>
+                <Text style={styles.locationText}>{CAMERAS[selectedCamera].location}</Text>
               </View>
             </View>
             <View style={styles.cameraControls}>
@@ -74,6 +119,19 @@ export default function DashboardScreen() {
             </View>
           </View>
         </View>
+        {/* Camera Switcher */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 10, marginTop: 2, paddingLeft: 12 }}>
+          {CAMERAS.map((cam, idx) => (
+            <TouchableOpacity
+              key={cam.name}
+              style={[styles.cameraThumb, selectedCamera === idx && styles.cameraThumbActive]}
+              onPress={() => setSelectedCamera(idx)}
+            >
+              <Image source={{ uri: cam.streamUrl }} style={styles.cameraThumbImg} />
+              <Text style={styles.cameraThumbText}>{cam.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
         {/* System Status */}
         <Text style={styles.sectionTitle}>System Status</Text>
         <View style={styles.statusRow}>
@@ -147,7 +205,7 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 16,
     overflow: 'hidden',
-    marginBottom: 18,
+    marginBottom: 8,
     marginTop: 4,
     backgroundColor: colors.cardBackground,
   },
@@ -211,6 +269,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 8,
   },
+  cameraThumb: {
+    width: 70,
+    marginRight: 10,
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: colors.cardBackground,
+    padding: 4,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  cameraThumbActive: {
+    borderColor: colors.primary,
+    borderWidth: 2,
+  },
+  cameraThumbImg: {
+    width: 54,
+    height: 38,
+    borderRadius: 7,
+    marginBottom: 2,
+  },
+  cameraThumbText: {
+    color: '#fff',
+    fontSize: 11,
+    textAlign: 'center',
+  },
   sectionTitle: {
     color: '#fff',
     fontFamily: 'Inter-SemiBold',
@@ -261,5 +344,59 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBold',
     fontSize: 15,
     marginBottom: 10,
+  },
+  // Modal styles
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  modalContent: {
+    backgroundColor: colors.cardBackground,
+    borderRadius: 16,
+    padding: 28,
+    alignItems: 'center',
+    width: 270,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  modalAvatar: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    marginBottom: 12,
+  },
+  modalName: {
+    color: '#fff',
+    fontSize: 19,
+    fontFamily: 'Inter-Bold',
+    marginBottom: 2,
+  },
+  modalEmail: {
+    color: colors.textSecondary,
+    fontSize: 14,
+    marginBottom: 2,
+  },
+  modalRole: {
+    color: colors.primary,
+    fontSize: 14,
+    marginBottom: 14,
+    fontFamily: 'Inter-SemiBold',
+  },
+  modalCloseBtn: {
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+    paddingHorizontal: 22,
+    paddingVertical: 8,
+    marginTop: 8,
   },
 });
