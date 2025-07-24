@@ -1,0 +1,13 @@
+Credentials.json
+Credentials.json
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.ipynb_checkpoints/
+Detected_images/
+chunk_video/
+local_videos/
