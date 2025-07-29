@@ -1,221 +1,276 @@
+import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { Funnel, ArrowUpDown, Bell, AlertTriangle } from 'lucide-react-native';
-import { colors } from '@/constants/Colors';
 
-interface AlertItem {
-  id: string;
+type AlertStatus = 'new' | 'reviewing' | 'resolved';
+
+type Alert = {
+  id: number;
+  title: string;
+  date: string;
   location: string;
-  dateTime: string;
-  area: string;
   confidence: number;
-  status: 'new' | 'reviewing' | 'resolved';
-}
+  status: AlertStatus;
+  icon: string;
+  color: string;
+};
 
-const alerts: AlertItem[] = [
-  { id: '1', location: 'Front Entrance', dateTime: '10/05/2025, 14:32:10', area: 'Main Building', confidence: 89, status: 'new' },
-  { id: '2', location: 'Warehouse', dateTime: '10/05/2025, 12:15:45', area: 'Storage Area', confidence: 76, status: 'reviewing' },
-  { id: '3', location: 'Parking Lot', dateTime: '09/05/2025, 18:22:33', area: 'North Side', confidence: 92, status: 'resolved' },
-  { id: '4', location: 'Office Area', dateTime: '09/05/2025, 10:05:12', area: 'Admin Building', confidence: 45, status: 'resolved' },
+const alerts: Alert[] = [
+  {
+    id: 1,
+    title: 'Front Entrance',
+    date: '10/05/2025, 14:32:10',
+    location: 'Main Building',
+    confidence: 89,
+    status: 'new',
+    icon: 'warning',
+    color: '#ef4444',
+  },
+  {
+    id: 2,
+    title: 'Warehouse',
+    date: '10/05/2025, 12:15:45',
+    location: 'Storage Area',
+    confidence: 76,
+    status: 'reviewing',
+    icon: 'report-problem',
+    color: '#f59e0b',
+  },
+  {
+    id: 3,
+    title: 'Parking Lot',
+    date: '09/05/2025, 18:22:33',
+    location: 'North Side',
+    confidence: 92,
+    status: 'resolved',
+    icon: 'check-circle',
+    color: '#22c55e',
+  },
+  {
+    id: 4,
+    title: 'Office Area',
+    date: '10/05/2025, 13:45:02',
+    location: 'Admin Block',
+    confidence: 81,
+    status: 'reviewing',
+    icon: 'report-problem',
+    color: '#f59e0b',
+  },
 ];
 
-export default function AlertScreen() {
-  const renderAlertItem = ({ item }: { item: AlertItem }) => {
-    const statusColor =
-      item.status === 'new'
-        ? colors.alert
-        : item.status === 'reviewing'
-        ? colors.warning
-        : colors.success;
-    const statusLabel =
-      item.status === 'new'
-        ? 'new'
-        : item.status === 'reviewing'
-        ? 'reviewing'
-        : 'resolved';
-
-    return (
-      <TouchableOpacity style={styles.alertCard}>
-        <View style={styles.alertHeader}>
-          <Text style={styles.alertTitle}>{item.location}</Text>
-          <View style={[styles.statusBadge, { backgroundColor: statusColor + '20' }]}> 
-            <Text style={{ color: statusColor, fontWeight: '600', fontSize: 12 }}>{statusLabel}</Text>
-          </View>
-        </View>
-        <View style={styles.alertDetails}>
-          <AlertTriangle size={16} color={statusColor} />
-          <Text style={styles.alertInfo}> {item.dateTime}  •  {item.area}</Text>
-        </View>
-        <Text style={[styles.confidenceText, { color: statusColor }]}>% {item.confidence}</Text>
-      </TouchableOpacity>
-    );
-  };
-
+const AlertsScreen = () => {
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
+      {/* Main Title */}
+      <Text style={styles.header}>Alerts & History</Text>
 
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Alerts & History</Text>
-        <TouchableOpacity>
-          <Bell size={22} color={colors.textPrimary} />
-        </TouchableOpacity>
+      {/* Summary Boxes */}
+      <View style={styles.summaryContainer}>
+        <View style={styles.summaryBox}>
+          <Text style={styles.summaryNumber}>5</Text>
+          <Text style={styles.summaryLabel}>Total</Text>
+        </View>
+        <View style={styles.summaryBox}>
+          <Text style={styles.summaryNumber}>1</Text>
+          <Text style={styles.summaryLabel}>New</Text>
+        </View>
+        <View style={styles.summaryBox}>
+          <Text style={styles.summaryNumber}>3</Text>
+          <Text style={styles.summaryLabel}>High Confidence</Text>
+        </View>
       </View>
 
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Summary Cards */}
-        <View style={styles.summaryRow}>
-          <View style={styles.summaryCard}>
-            <Text style={styles.summaryNumber}>5</Text>
-            <Text style={styles.summaryLabel}>Total</Text>
-          </View>
-          <View style={styles.summaryCard}>
-            <Text style={styles.summaryNumber}>1</Text>
-            <Text style={styles.summaryLabel}>New</Text>
-          </View>
-          <View style={styles.summaryCard}>
-            <Text style={styles.summaryNumber}>3</Text>
-            <Text style={styles.summaryLabel}>High Confidence</Text>
-          </View>
-        </View>
+      {/* Subheading */}
+      <View style={styles.subHeader}>
+        <Text style={styles.subTitle}>Recent Alerts</Text>
+        <MaterialIcons name="history" size={20} color="#94a3b8" />
+      </View>
 
-        {/* Filter & Sort icons */}
-        <View style={styles.filterRow}>
-          <Text style={styles.sectionTitle}>Recent Alerts</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Funnel size={20} color={colors.textPrimary} style={{ marginRight: 16 }} />
-            <ArrowUpDown size={20} color={colors.textPrimary} />
+      {/* Alerts List */}
+      <ScrollView style={styles.scrollArea}>
+        {alerts.map((alert) => (
+          <View key={alert.id} style={styles.alertCard}>
+            <View style={styles.alertHeader}>
+              <MaterialIcons name={alert.icon as any} size={20} color={alert.color} />
+              <Text style={styles.alertTitle}>{alert.title}</Text>
+              <View style={[styles.statusTag, styles[alert.status]]}>
+                <Text style={styles.statusText}>{alert.status}</Text>
+              </View>
+            </View>
+            <Text style={styles.alertDetail}>
+              {alert.date} • {alert.location}
+            </Text>
+            <Text style={styles.alertConfidence}>% {alert.confidence}</Text>
           </View>
-        </View>
+        ))}
 
-        {/* Alert List */}
-        <FlatList
-          data={alerts}
-          keyExtractor={(item) => item.id}
-          renderItem={renderAlertItem}
-          scrollEnabled={false}
-        />
+        {/* Panic Button */}
+        <TouchableOpacity style={styles.panicButton}>
+          <MaterialIcons name="error" size={20} color="#fff" />
+          <Text style={styles.panicText}> Panic Button</Text>
+        </TouchableOpacity>
       </ScrollView>
 
-      {/* Panic Button */}
-      <TouchableOpacity style={styles.panicButton}>
-        <AlertTriangle size={18} color="#fff" />
-        <Text style={styles.panicText}> Panic Button </Text>
-      </TouchableOpacity>
+      {/* Navigation Bar */}
+      <View style={styles.navBar}>
+        <TouchableOpacity style={styles.navItem}>
+          <MaterialIcons name="dashboard" size={24} color="#fff" />
+          <Text style={styles.navLabel}>Dashboard</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <MaterialIcons name="notifications" size={24} color="#facc15" />
+          <Text style={[styles.navLabel, { color: '#facc15' }]}>Alerts</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <Ionicons name="image" size={24} color="#fff" />
+          <Text style={styles.navLabel}>Gallery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navItem}>
+          <FontAwesome5 name="cog" size={22} color="#fff" />
+          <Text style={styles.navLabel}>Settings</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
-}
+};
+
+export default AlertsScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#0f172a',
+    paddingTop: 50,
     paddingHorizontal: 16,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 32,
-    paddingBottom: 12,
-  },
-  headerTitle: {
-    fontFamily: 'Inter-Bold',
     fontSize: 22,
+    fontWeight: 'bold',
     color: '#fff',
+    marginBottom: 16,
   },
-  summaryRow: {
+  summaryContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 16,
+    marginBottom: 16,
   },
-  summaryCard: {
+  summaryBox: {
     flex: 1,
-    backgroundColor: colors.cardBackground,
-    padding: 12,
+    backgroundColor: '#1e293b',
     borderRadius: 12,
+    padding: 16,
     alignItems: 'center',
     marginHorizontal: 4,
   },
   summaryNumber: {
-    fontSize: 18,
-    fontFamily: 'Inter-Bold',
     color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   summaryLabel: {
-    fontSize: 12,
-    color: colors.textSecondary,
+    color: '#94a3b8',
     marginTop: 4,
   },
-  filterRow: {
+  subHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
   },
-  sectionTitle: {
-    fontFamily: 'Inter-SemiBold',
-    fontSize: 17,
-    color: '#fff',
+  subTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#94a3b8',
+  },
+  scrollArea: {
+    flex: 1,
+    marginBottom: 70, // for nav bar
   },
   alertCard: {
-    backgroundColor: colors.cardBackground,
-    padding: 12,
+    backgroundColor: '#1e293b',
     borderRadius: 12,
+    padding: 16,
     marginBottom: 12,
   },
   alertHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   alertTitle: {
-    fontSize: 15,
-    fontFamily: 'Inter-SemiBold',
     color: '#fff',
+    fontSize: 16,
+    flex: 1,
+    marginLeft: 8,
   },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  alertDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 6,
-  },
-  alertInfo: {
-    fontSize: 12,
-    color: colors.textSecondary,
-  },
-  confidenceText: {
-    fontSize: 12,
+  alertDetail: {
+    color: '#cbd5e1',
+    fontSize: 13,
     marginTop: 4,
   },
+  alertConfidence: {
+    color: '#ef4444',
+    fontWeight: 'bold',
+    marginTop: 6,
+  },
+  statusTag: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  statusText: {
+    color: '#fff',
+    fontSize: 12,
+    textTransform: 'capitalize',
+  },
+  new: {
+    backgroundColor: '#ef4444',
+  },
+  reviewing: {
+    backgroundColor: '#f59e0b',
+  },
+  resolved: {
+    backgroundColor: '#22c55e',
+  },
   panicButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
     flexDirection: 'row',
+    backgroundColor: '#ef4444',
+    borderRadius: 20,
+    paddingVertical: 14,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.alert,
-    paddingVertical: 14,
-    borderRadius: 50,
+    marginTop: 10,
   },
   panicText: {
     color: '#fff',
-    fontFamily: 'Inter-Bold',
-    marginLeft: 8,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  navBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 70,
+    backgroundColor: '#1e293b',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderTopColor: '#334155',
+    borderTopWidth: 1,
+  },
+  navItem: {
+    alignItems: 'center',
+  },
+  navLabel: {
+    fontSize: 12,
+    color: '#fff',
+    marginTop: 4,
   },
 });

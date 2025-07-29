@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { ChevronLeft, BellRing, Shield } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import { ChevronLeft, BellRing, Shield, X } from 'lucide-react-native';
 import { router, usePathname } from 'expo-router';
 import { colors } from '@/constants/Colors';
 
@@ -30,13 +30,74 @@ export default function Header({ title, showBack, showProfile = false, showBrand
     </TouchableOpacity>
   );
   
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
   const renderProfileButton = () => (
-    <TouchableOpacity style={styles.profileButton}>
+    <TouchableOpacity 
+      style={styles.profileButton}
+      onPress={() => setShowProfileModal(true)}
+    >
       <Image 
-        source={{ uri: 'https://images.pexels.com/photos/3785079/pexels-photo-3785079.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' }} 
+        source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }} 
         style={styles.profileImage}
       />
     </TouchableOpacity>
+  );
+
+  // User data - should match ProfileModal or come from a shared source
+  const user = {
+    name: 'Demo',
+    email: 'demo123@gmail.com',
+    role: 'Security Officer',
+    lastLogin: '2025-07-20T10:30:00',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+  };
+
+  const renderProfileModal = () => (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={showProfileModal}
+      onRequestClose={() => setShowProfileModal(false)}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <TouchableOpacity 
+            style={styles.closeButton} 
+            onPress={() => setShowProfileModal(false)}
+          >
+            <X size={24} color={colors.textPrimary} />
+          </TouchableOpacity>
+          
+          <View style={styles.avatarContainer}>
+            <Image 
+              source={{ uri: user.avatar }} 
+              style={styles.largeProfileImage} 
+            />
+          </View>
+          
+          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={styles.userRole}>{user.role}</Text>
+          
+          <View style={styles.infoContainer}>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Email:</Text>
+              <Text style={styles.infoValue}>{user.email}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Last Login:</Text>
+              <Text style={styles.infoValue}>
+                {new Date().toLocaleString()}
+              </Text>
+            </View>
+          </View>
+          
+          <TouchableOpacity style={styles.logoutButton}>
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
   );
 
   const renderBranding = () => (
@@ -47,16 +108,19 @@ export default function Header({ title, showBack, showProfile = false, showBrand
   );
   
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        {showBack && renderBackButton()}
-        {showBranding ? renderBranding() : <Text style={styles.title}>{title}</Text>}
-        <View style={styles.rightContainer}>
-          {renderNotificationButton()}
-          {showProfile && renderProfileButton()}
+    <>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          {showBack && renderBackButton()}
+          {showBranding ? renderBranding() : <Text style={styles.title}>{title}</Text>}
+          <View style={styles.rightContainer}>
+            {renderNotificationButton()}
+            {showProfile && renderProfileButton()}
+          </View>
         </View>
       </View>
-    </View>
+      {renderProfileModal()}
+    </>
   );
 }
 
@@ -118,11 +182,95 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     overflow: 'hidden',
-    marginLeft: 8,
+    marginLeft: 16,
   },
   profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: colors.primary,
+  },
+  largeProfileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: colors.primary,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    width: '85%',
+    backgroundColor: colors.background,
+    borderRadius: 20,
+    padding: 25,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButton: {
+    position: 'absolute',
+    right: 15,
+    top: 15,
+    padding: 5,
+  },
+  avatarContainer: {
+    marginTop: 10,
+    marginBottom: 15,
+  },
+  userName: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: colors.textPrimary,
+    marginBottom: 5,
+  },
+  userRole: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    marginBottom: 20,
+  },
+  infoContainer: {
     width: '100%',
-    height: '100%',
+    marginBottom: 25,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  infoLabel: {
+    fontSize: 15,
+    color: colors.textSecondary,
+  },
+  infoValue: {
+    fontSize: 15,
+    color: colors.textPrimary,
+    fontWeight: '500',
+  },
+  logoutButton: {
+    width: '100%',
+    backgroundColor: colors.alert,
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  logoutButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
   brandingContainer: {
     flexDirection: 'row',
